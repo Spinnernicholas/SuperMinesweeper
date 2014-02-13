@@ -1,9 +1,9 @@
 $(function(){
   //Params
-  var minefield_width = 30;//in cells
-  var minefield_height = 16;//in cells
+  var minefield_width = 10;//in cells
+  var minefield_height = 10;//in cells
   
-  var num_of_mines = 99;
+  var num_of_mines = 15;
   //End Params
   
   //Global Reference to minefield div
@@ -27,16 +27,40 @@ $(function(){
     return cell;
   }
   
+  _data = []
   for(var i=0;i<minefield_width;i+=1)
   {
+    _data[i] = [];
     for(var j=0;j<minefield_height;j+=1)
     {
       var cell = minefield.createCell(i*cell_width,j*cell_height);
-      cell.attr({
+      _data[i][j] = cell.attr({
         "data-x":i,
         "data-y":j
       });
     }
+  }
+  
+  getNeighbors = function(cell)
+  {
+    var x = cell.attr("data-x");
+    var y = cell.attr("data-y");
+    
+    var cells = $('');
+    
+    for(var i=Math.max(x-1,0);i<Math.min(x*1+2,minefield_width);i+=1)
+    {
+      for(var j=Math.max(y-1,0);j<Math.min(y*1+2,minefield_height);j+=1)
+      {
+        if(i == x && j == y)
+        {
+          continue;
+        }
+        cells = cells.add(_data[i][j]);
+      }
+    }
+    
+    return cells;
   }
   
   //Compensate for border.
@@ -69,34 +93,17 @@ $(function(){
   calculateCellNumber = function(cell){
     var x = cell.attr("data-x");
     var y = cell.attr("data-y");
-    var query = "[data-x="+(x-1)+"][data-y="+(y-1)+"].mine," +
-                "[data-x="+x+"][data-y="+(y-1)+"].mine," +
-                "[data-x="+(x*1+1)+"][data-y="+(y-1)+"].mine," +
-                "[data-x="+(x-1)+"][data-y="+y+"].mine," +
-                "[data-x="+(x*1+1)+"][data-y="+y+"].mine," +
-                "[data-x="+(x-1)+"][data-y="+(y*1+1)+"].mine," +
-                "[data-x="+x+"][data-y="+(y*1+1)+"].mine," +
-                "[data-x="+(x*1+1)+"][data-y="+(y*1+1)+"].mine";
-    neighbors = $(query);
-    if(neighbors.length > 0)
+    var neighbors = getNeighbors(cell);
+    var mines = neighbors.filter(".mine");
+    if(mines.length > 0)
     {
-      cell.text(neighbors.length);
-      cell.addClass("number n"+neighbors.length);
+      cell.text(mines.length);
+      cell.addClass("number n"+mines.length);
     }
     else
     {
-      var query = "[data-x="+(x-1)+"][data-y="+(y-1)+"]:not(.revealed)," +
-                  "[data-x="+x+"][data-y="+(y-1)+"]:not(.revealed)," +
-                  "[data-x="+(x*1+1)+"][data-y="+(y-1)+"]:not(.revealed)," +
-                  "[data-x="+(x-1)+"][data-y="+y+"]:not(.revealed)," +
-                  "[data-x="+(x*1+1)+"][data-y="+y+"]:not(.revealed)," +
-                  "[data-x="+(x-1)+"][data-y="+(y*1+1)+"]:not(.revealed)," +
-                  "[data-x="+x+"][data-y="+(y*1+1)+"]:not(.revealed)," +
-                  "[data-x="+(x*1+1)+"][data-y="+(y*1+1)+"]:not(.revealed)";
-      neighbors = $(query);
-      neighbors.each(function(){
-        revealCell($(this));
-        calculateCellNumber($(this));
+      neighbors.filter(".hidden").each(function(){
+        $(this).click();
       });
     }
   }
