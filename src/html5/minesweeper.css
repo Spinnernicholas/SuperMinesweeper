@@ -1,3 +1,38 @@
+#minesweeper{
+  float: left;
+  padding: 6px;
+  border-style: ridge;
+  border: 3px;
+  border-color: #D9D9D9;
+  background-color: #D9D9D9;
+}
+
+#scorebar{
+  height: 25px;
+  background-color: #D9D9D9;
+}
+
+#minecounter{
+  float: left;
+}
+
+#timer{
+  float: right;
+}
+
+#gameface{
+  float: left;
+  width: 20px;
+  height: 20px;
+}
+
+.score{
+  width: 50px;
+  background-color: white;
+  border-style: inset;
+  border: 3px;
+}
+
 #minefield{
   position: relative;
   width: 200px;
