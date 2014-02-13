@@ -102,14 +102,13 @@ $(function(){
     }
     else
     {
-      neighbors.filter(".hidden").each(function(){
-        $(this).click();
-      });
+      neighbors.filter(".hidden").click();
     }
   }
   
   minefield.on("click",".uninitialized",function(){
     revealCell($(this));
+    getNeighbors($(this)).addClass("revealed");
     initMinefield();
     calculateCellNumber($(this));
   });
