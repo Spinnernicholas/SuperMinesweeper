@@ -10,10 +10,14 @@ $(function(){
   minefield = $("div#minefield");
   
   //Calculated Params
-  var cell_width = minefield.innerWidth() / minefield_width;
-  var cell_height = minefield.innerHeight() / minefield_height;
+  var cell_width = Math.floor(minefield.innerWidth() / minefield_width);
+  var cell_height = Math.floor(minefield.innerHeight() / minefield_height);
+  /*minefield.css({
+    "width": cell_width * minefield_width,
+    "height": cell_height * minefield_height
+  });//*/
   //End Calculated Params
-  $("<style>.number{font-size: " + .8 * cell_height + "px;} .cell{width:" + (cell_width - 1) + ";height:" + (cell_height - 1) + ";}</style>").appendTo($("html > head"));
+  $("<style>.number{font-size: " + .8 * cell_height + "px;} .revealed{width:" + cell_width + ";height:" + cell_height + ";}</style>").appendTo($("html > head"));
   
   minefield.createCell = function(x,y)
   {
@@ -25,7 +29,7 @@ $(function(){
       })
       .appendTo(minefield);
     return cell;
-  }
+  };
   
   _data = []
   for(var i=0;i<minefield_width;i+=1)
@@ -39,7 +43,7 @@ $(function(){
         "data-y":j
       });
     }
-  }
+  };
   
   getNeighbors = function(cell)
   {
@@ -61,34 +65,31 @@ $(function(){
     }
     
     return cells;
-  }
+  };
   
   //Compensate for border.
   var cell = $("div.cell");
-  cell_width -= cell.outerWidth() - cell_width;
-  cell_height -= cell.outerHeight() - cell_height;
+  cell_width -= cell.outerWidth();
+  cell_height -= cell.outerHeight();
   $("<style>.hidden{width:" + cell_width + ";height:" + cell_height + ";}</style>").appendTo($("html > head"));
   
-  addMine = function()
-  {
-    var cells = minefield.children(".cell:not(.revealed):not(.mine)");
+  addMine = function(){
+    var cells = minefield.children(".cell.uninitialized");
     var index = Math.floor(cells.length * Math.random());
-    $(cells[index]).addClass("mine");
-  }
+    $(cells[index]).removeClass("uninitialized").addClass("mine");
+  };
   
   initMinefield = function(){
-    minefield.children(".uninitialized").removeClass("uninitialized");
-    var i = 0;
-    while(i < num_of_mines)
+    for(var i=0;i < num_of_mines;i+=1)
     {
       addMine();
-      i+=1;
     }
-  }
+    minefield.children(".uninitialized").removeClass("uninitialized");
+  };
   
   revealCell = function(cell){
     cell.removeClass("hidden").addClass("revealed");
-  }
+  };
   
   calculateCellNumber = function(cell){
     var x = cell.attr("data-x");
@@ -104,16 +105,34 @@ $(function(){
     {
       neighbors.filter(".hidden").click();
     }
-  }
+  };
   
-  minefield.on("click",".uninitialized",function(){
-    revealCell($(this));
-    getNeighbors($(this)).addClass("revealed");
-    initMinefield();
-    calculateCellNumber($(this));
+  //Disable Right Click, replace with flagging.
+  minefield.on("contextmenu", function(e)
+  {
+    return false;
   });
   
-  minefield.on("click",".hidden:not(.mine)",function(){
+  minefield.on("contextmenu", ".hidden:not(.flagged)", function(e)
+  {
+    $(this).addClass("flagged");
+    //return false;
+  });
+  
+  minefield.on("contextmenu", ".hidden.flagged", function(e)
+  {
+    $(this).removeClass("flagged");
+    return false;
+  });
+  
+  minefield.on("click",".uninitialized",function(){
+    $(this).removeClass("uninitialized");
+    getNeighbors($(this)).removeClass("uninitialized");
+    initMinefield();
+    $(this).click();
+  });
+  
+  minefield.on("click",".hidden:not(.mine):not(uninitialized)",function(e){
     revealCell($(this));
     calculateCellNumber($(this));
   });
@@ -121,4 +140,14 @@ $(function(){
   minefield.on("click",".hidden.mine",function(){
     revealCell($(this));
   });
+  
+  minefield.on("click",".revealed.number",function(){
+    var neighbors = getNeighbors($(this));
+    var mines = neighbors.filter(".mine");
+    var flags = neighbors.filter(".flagged");
+    if(flags.length >= mines.length)
+    {
+      neighbors.filter(".hidden:not(.flagged)").click();
+    }
+  });//*/
 });
