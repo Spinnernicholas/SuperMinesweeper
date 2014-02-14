@@ -132,13 +132,12 @@ $(function(){
     $(this).click();
   });
   
-  minefield.on("click",".hidden:not(.mine):not(uninitialized)",function(e){
+  minefield.on("click",".hidden:not(.uninitialized):not(.flagged)",function(e){
     revealCell($(this));
-    calculateCellNumber($(this));
-  });
-  
-  minefield.on("click",".hidden.mine",function(){
-    revealCell($(this));
+    if(!$(this).hasClass("mine"))
+    {
+      calculateCellNumber($(this));
+    }
   });
   
   minefield.on("click",".revealed.number",function(){

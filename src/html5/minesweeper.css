@@ -1,9 +1,9 @@
 #minesweeper{
   float: left;
   padding: 6px;
-  border-style: ridge;
   border: 3px;
-  border-color: #D9D9D9;
+  border-style: outset;
+  border-color: #F7F7F7 #9E9E9E #7E7E7E #C6C6C6;
   background-color: #D9D9D9;
 }
 
@@ -27,14 +27,17 @@
 }
 
 .score{
+  text-align: center;
   width: 50px;
   background-color: white;
+  border: 2px;
   border-style: inset;
-  border: 3px;
+  border-radius:5px;
 }
 
 #minefield{
   position: relative;
+  margin-top: 4px;
   width: 200px;
   height: 200px;
   padding: 10px;
@@ -42,12 +45,7 @@
 }
 
 .cell{
-  vertical-align: middle;
   position: absolute;
-}
-
-.uninitialized{
-
 }
 
 .hidden{
@@ -62,10 +60,9 @@
 }
 
 .revealed{
-  background: none;
+  border: .5px;
   border-style: solid;
-  border: 1px;
-  border-color: red;
+  border-color: #C6C6C6;
 }
 
 .number{
