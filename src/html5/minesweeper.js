@@ -45,6 +45,15 @@ $(function(){
     }
   };
   
+  var player_control = true;
+  
+  updateNumOfMines = function()
+  {
+    $("#minecounter").text(num_of_mines - minefield.children(".flagged").length);
+  }
+  
+  updateNumOfMines();
+  
   getNeighbors = function(cell)
   {
     var x = cell.attr("data-x");
@@ -107,6 +116,21 @@ $(function(){
     }
   };
   
+  //This allows us to disable player controls.
+  minefield.on("click",".cell",function(event){
+    if(!player_control)
+    {
+      event.stopImmediatePropagation();
+    }
+  });
+  
+  minefield.on("contextmenu",".cell",function(event){
+    if(!player_control)
+    {
+      event.stopImmediatePropagation();
+    }
+  });
+  
   //Disable Right Click, replace with flagging.
   minefield.on("contextmenu", function(e)
   {
@@ -116,12 +140,14 @@ $(function(){
   minefield.on("contextmenu", ".hidden:not(.flagged)", function(e)
   {
     $(this).addClass("flagged");
+    updateNumOfMines();
     //return false;
   });
   
   minefield.on("contextmenu", ".hidden.flagged", function(e)
   {
     $(this).removeClass("flagged");
+    updateNumOfMines();
     return false;
   });
   
