@@ -29,6 +29,13 @@
   margin: 0 auto;
   width: 20px;
   height: 20px;
+  background: url(face-smile.svg);
+  background-size: 20px;
+  background-repeat:no-repeat;
+  background-position: center center;
+  padding: 0px;
+  border: 2px;
+  border-style: outset;
 }
 
 .score{
@@ -46,7 +53,7 @@
   width: 230px;
   height: 230px;
   padding: 10px;
-  background-image: url("background.svg");
+  background-image: url(background.svg);
 }
 
 .cell{
