@@ -10,14 +10,14 @@ $(function(){
   minefield = $("div#minefield");
   
   //Calculated Params
-  var cell_width = Math.floor(minefield.innerWidth() / minefield_width);
-  var cell_height = Math.floor(minefield.innerHeight() / minefield_height);
+  var cell_width = 25;
+  var cell_height = 25;
   /*minefield.css({
     "width": cell_width * minefield_width,
     "height": cell_height * minefield_height
   });//*/
   //End Calculated Params
-  $("<style>.number{font-size: " + .8 * cell_height + "px;} .revealed{width:" + cell_width + ";height:" + cell_height + ";}</style>").appendTo($("html > head"));
+  //$("<style>.number{font-size: " + .8 * cell_height + "px;} .revealed{width:" + cell_width + ";height:" + cell_height + ";}</style>").appendTo($("html > body"));
   
   minefield.createCell = function(x,y)
   {
@@ -80,7 +80,7 @@ $(function(){
   var cell = $("div.cell");
   cell_width -= cell.outerWidth();
   cell_height -= cell.outerHeight();
-  $("<style>.hidden{width:" + cell_width + ";height:" + cell_height + ";}</style>").appendTo($("html > head"));
+  //$("<style>.hidden{width:" + cell_width + ";height:" + cell_height + ";}</style>").appendTo($("html > body"));
   
   addMine = function(){
     var cells = minefield.children(".cell.uninitialized");

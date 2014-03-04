@@ -13,15 +13,20 @@
 }
 
 #minecounter{
-  float: left;
+  display: inline-block;
 }
 
 #timer{
-  float: right;
+  display: inline-block;
+}
+
+#gamefaceholder{
+  display: inline-block;
+  width: 134px;
 }
 
 #gameface{
-  float: left;
+  margin: 0 auto;
   width: 20px;
   height: 20px;
 }
@@ -38,10 +43,10 @@
 #minefield{
   position: relative;
   margin-top: 4px;
-  width: 200px;
-  height: 200px;
+  width: 230px;
+  height: 230px;
   padding: 10px;
-  background-image: url("background.png");
+  background-image: url("background.svg");
 }
 
 .cell{
@@ -49,6 +54,8 @@
 }
 
 .hidden{
+  width: 19px;
+  height: 19px;
   border: 3px;
   border-style: outset;
   border-color: #F7F7F7 #9E9E9E #7E7E7E #C6C6C6;
@@ -60,7 +67,9 @@
 }
 
 .revealed{
-  border: .5px;
+  width: 24px;
+  height: 24px;
+  border: 1px;
   border-style: solid;
   border-color: #C6C6C6;
 }
