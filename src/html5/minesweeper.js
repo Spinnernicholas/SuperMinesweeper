@@ -10,6 +10,7 @@ $(function(){
   //End Params
   
   var player_control = true;
+  var gameover = false;
   
   //Global Reference to minefield div
   minefield = $("div#minefield");
@@ -39,12 +40,50 @@ $(function(){
   };
   
   initMinefield = function(){
+    //Create Jagged Array to Store Cell Jquery Object
+    _data = [];
+    for(var i=0;i<minefield_width;i+=1)
+    {
+      _data[i] = [];
+      for(var j=0;j<minefield_height;j+=1)
+      {
+        var cell = minefield.createCell(i*cell_width,j*cell_height);
+        _data[i][j] = cell.attr({
+          "data-x":i,
+          "data-y":j
+        });
+      }
+    };
+  };
+  
+  spawnMines = function()
+  {
     for(var i=0;i < num_of_mines;i+=1)
     {
       addMine();
     }
     minefield.children(".uninitialized").removeClass("uninitialized");
   };
+  
+  resetMinefield = function(){
+    for(var i = 0;i < _data.length; i++)
+    {
+      for(var j = 0;j < _data[i].length; j++)
+      {
+        _data[i][j].text("").removeClass().addClass("cell hidden uninitialized");
+      }
+    }
+  };
+  
+  revealMinefield = function(){
+    for(var i = 0;i < _data.length; i++)
+    {
+      for(var j = 0;j < _data[i].length; j++)
+      {
+        _data[i][j].text("").addClass("revealed");
+      }
+    }
+  }
   
   /*
   -------------------------
@@ -98,6 +137,10 @@ $(function(){
   ---- Mine Counter ----
   ----------------------
   */
+  initMineCounter = function()
+  {
+    $("#minecounter").text(num_of_mines);
+  }
   
   updateMineCounter = function()
   {
@@ -118,50 +161,53 @@ $(function(){
   -------------------------
   */
   
+  setGameface = function(img)
+  {
+    $("#gameface").css({
+      "background-image": "url(" + img + ")"
+    });
+  }
   
+  $("#gameface").on("click",function(){
+    if(gameover)
+    {
+      Reset();
+    }
+  });
   
   /*
   --------------------
   ---- Game State ----
   --------------------
   */
+  
   Start = function()
-  {
-    //Create Jagged Array to Store Cell Jquery Object
-    _data = [];
-    for(var i=0;i<minefield_width;i+=1)
-    {
-      _data[i] = [];
-      for(var j=0;j<minefield_height;j+=1)
-      {
-        var cell = minefield.createCell(i*cell_width,j*cell_height);
-        _data[i][j] = cell.attr({
-          "data-x":i,
-          "data-y":j
-        });
-      }
-    };
-    
-    updateMineCounter();
+  { 
+    initMineCounter();
+    initMinefield();
   };
   
   Gameover = function()
   {
-    $("#gameface").css({
-      "background-image": "url(face-sick.svg)"
-    });
+    setGameface("face-sick.svg");
+    revealMinefield();
+    gameover = true;
     player_control = false;
   };
   
   Reset = function()
   {
-    
+    initMineCounter();
+    resetMinefield();
+    gameover = false;
+    player_control = true;
+    setGameface("face-smile.svg");
   };
   
   /*
-  -------------------
-  ---- Minefield ----
-  -------------------
+  ---------------------------------
+  ---- Minefield Event Handlers----
+  ---------------------------------
   */
   
   //This allows us to disable player controls.
@@ -203,7 +249,7 @@ $(function(){
   minefield.on("click",".uninitialized",function(){
     $(this).removeClass("uninitialized");
     getNeighbors($(this)).removeClass("uninitialized");
-    initMinefield();
+    spawnMines();
     $(this).click();
   });
   
@@ -228,6 +274,7 @@ $(function(){
       neighbors.filter(".hidden:not(.flagged)").click();
     }
   });//*/
+  
   /*
   --------------------
   ---- Start Game ----
