@@ -83,7 +83,10 @@
 }
 
 .flagged{
-  background-color: red;
+  background-size: 19px;
+  background-repeat:no-repeat;
+  background-position: center center;
+  background-image: url(flag.svg);
 }
 
 .revealed{
