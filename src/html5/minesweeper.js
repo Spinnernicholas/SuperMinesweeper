@@ -102,7 +102,7 @@ $(function(){
     var mines = neighbors.filter(".mine");
     if(mines.length > 0)
     {
-      cell.text(mines.length);
+      //cell.text(mines.length);
       cell.addClass("number n"+mines.length);
     }
     else

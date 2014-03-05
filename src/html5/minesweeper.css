@@ -101,42 +101,45 @@
 .number{
   font-weight:bold;
   text-align: center;
+  background-size: 19px;
+  background-repeat:no-repeat;
+  background-position: center center;
 }
 
 .n1{
   color: blue;
+  background-image: url(1.svg);
 }
 
 .n2{
   color: green;
+  background-image: url(2.svg);
 }
 
 .n3{
   color: red;
+  background-image: url(3.svg);
 }
 
 .n4{
   color: purple;
+  background-image: url(4.svg);
 }
 
 .n5{
-
+  background-image: url(5.svg);
 }
 
 .n6{
-
+  background-image: url(6.svg);
 }
 
 .n7{
-
+  background-image: url(7.svg);
 }
 
 .n8{
-
-}
-
-.n9{
-
+  background-image: url(8.svg);
 }
 
 .mine.revealed{
