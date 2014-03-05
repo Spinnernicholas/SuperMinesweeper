@@ -152,9 +152,48 @@ $(function(){
   ---- Timer ----
   ---------------
   */
+  initTimer = function()
+  {
+    timer = {};
+    timer.startTime = 0;
+    timer.currentTime = 0;
+    timer.interval = null;
+  }
   
+  startTimer = function()
+  {
+    timer.interval = setInterval(function(){updateTimer();}, 10);
+    timer.startTime = new Date().getTime();
+  }
   
-
+  stopTimer = function()
+  {
+    clearInterval(timer.interval);
+  }
+  
+  updateTimer = function()
+  {
+    timer.currentTime = new Date().getTime();
+    if(timer.currentTime - timer.startTime < 10000)
+    {
+      $("#timer").text(((timer.currentTime - timer.startTime)/1000).toFixed(2));
+    }
+    else if(timer.currentTime - timer.startTime < 100000)
+    {
+      $("#timer").text(((timer.currentTime - timer.startTime)/1000).toFixed(1));
+    }
+    else
+    {
+      $("#timer").text(Math.floor((timer.currentTime - timer.startTime)/1000));
+    }
+  }
+  
+  resetTimer = function()
+  {
+    $("#timer").text("0.00");
+    timer.startTime = new Date().getTime();
+    timer.scale = 10;
+  }
   /*
   -------------------------
   ---- Gameface Button ----
@@ -182,6 +221,7 @@ $(function(){
   
   Gameover = function()
   {
+    stopTimer();
     $("#gameface").addClass("gameover");
     revealMinefield();
     gameover = true;
@@ -190,12 +230,20 @@ $(function(){
   
   Reset = function()
   {
+    resetTimer();
     initMineCounter();
     resetMinefield();
     gameover = false;
     player_control = true;
     $("#gameface").removeClass("gameover");
   };
+  
+  Win = function()
+  {
+    stopTimer();
+    gameover = true;
+    player_control = false;
+  }
   
   /*
   ---------------------------------
@@ -262,6 +310,7 @@ $(function(){
     getNeighbors($(this)).removeClass("uninitialized");
     spawnMines();
     $(this).click();
+    startTimer();
   });
   
   //Click on non-basic flag, hidden cell
