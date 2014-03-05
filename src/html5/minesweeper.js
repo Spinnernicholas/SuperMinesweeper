@@ -80,7 +80,7 @@ $(function(){
     {
       for(var j = 0;j < _data[i].length; j++)
       {
-        _data[i][j].text("").addClass("revealed");
+        _data[i][j].addClass("revealed");
       }
     }
   }
