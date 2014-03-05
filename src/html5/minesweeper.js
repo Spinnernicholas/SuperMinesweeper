@@ -204,6 +204,7 @@ $(function(){
   */
   
   //This allows us to disable player controls.
+  //Disable Click
   minefield.on("click",".cell",function(event){
     if(!player_control)
     {
@@ -211,6 +212,7 @@ $(function(){
     }
   });
   
+  //Disable Right Click
   minefield.on("contextmenu",".cell",function(event){
     if(!player_control)
     {
@@ -225,20 +227,36 @@ $(function(){
     return false;
   });
   
+  
+  //Right Click on hidden, non-flagged cell
+  //Add basic flag
   minefield.on("contextmenu", ".hidden:not(.flagged)", function(e)
   {
-    $(this).addClass("flagged");
+    $(this).addClass("flagged flag");
     updateMineCounter();
     //return false;
   });
   
-  minefield.on("contextmenu", ".hidden.flagged", function(e)
+  //Right Click on hidden, basic flagged cell
+  //Change to unknown flag
+  minefield.on("contextmenu", ".hidden.flagged.flag", function(e)
   {
-    $(this).removeClass("flagged");
+    $(this).removeClass("flag").addClass("unknown");
     updateMineCounter();
     return false;
   });
   
+  //Right Click on hidden, unknown flagged cell
+  //remove flags
+  minefield.on("contextmenu", ".hidden.flagged.unknown", function(e)
+  {
+    $(this).removeClass("flagged unknown");
+    updateMineCounter();
+    return false;
+  });
+  
+  //Click on uninitialized cell(first cell)
+  //protect cell and neighbour cells, then spawn bombs
   minefield.on("click",".uninitialized",function(){
     $(this).removeClass("uninitialized");
     getNeighbors($(this)).removeClass("uninitialized");
@@ -246,7 +264,9 @@ $(function(){
     $(this).click();
   });
   
-  minefield.on("click",".hidden:not(.uninitialized):not(.flagged)",function(e){
+  //Click on non-basic flag, hidden cell
+  //reveal cell, calc cell number, if mine, gameover
+  minefield.on("click",".hidden:not(.uninitialized):not(.flagged.flag)",function(e){
     revealCell($(this));
     if(!$(this).hasClass("mine"))
     {
@@ -258,13 +278,21 @@ $(function(){
     }
   });
   
+  //Click on unknown flagged cell
+  //Remove flag
+  minefield.on("click",".hidden.flagged.unknown:not(.uninitialized)",function(e){
+    $(this).removeClass("flagged unknown");
+  });
+  
+  //Click on revealed number cell
+  //If basic flag neighbors > cell number, reveal all neighbours with no basic flag.
   minefield.on("click",".revealed.number",function(){
     var neighbors = getNeighbors($(this));
     var mines = neighbors.filter(".mine");
-    var flags = neighbors.filter(".flagged");
+    var flags = neighbors.filter(".flagged.flag");
     if(flags.length >= mines.length)
     {
-      neighbors.filter(".hidden:not(.flagged)").click();
+      neighbors.filter(".hidden:not(.flagged.flag)").click();
     }
   });//*/
   
