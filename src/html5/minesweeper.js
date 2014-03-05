@@ -161,13 +161,6 @@ $(function(){
   -------------------------
   */
   
-  setGameface = function(img)
-  {
-    $("#gameface").css({
-      "background-image": "url(" + img + ")"
-    });
-  }
-  
   $("#gameface").on("click",function(){
     if(gameover)
     {
@@ -189,7 +182,7 @@ $(function(){
   
   Gameover = function()
   {
-    setGameface("face-sick.svg");
+    $("#gameface").addClass("gameover");
     revealMinefield();
     gameover = true;
     player_control = false;
@@ -201,7 +194,7 @@ $(function(){
     resetMinefield();
     gameover = false;
     player_control = true;
-    setGameface("face-smile.svg");
+    $("#gameface").removeClass("gameover");
   };
   
   /*
