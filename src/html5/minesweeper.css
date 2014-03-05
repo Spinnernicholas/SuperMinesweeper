@@ -56,8 +56,12 @@
   border-style: outset;
 }
 
-#gameface.gameover{
+#gameface.gameover.lose{
   background-image: url(face-sick.svg);
+}
+
+#gameface.gameover.win{
+  background-image: url(face-smile-big.svg);
 }
 
 /*Actual Minefield*/

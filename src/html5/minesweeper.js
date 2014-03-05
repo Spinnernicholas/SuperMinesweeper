@@ -6,7 +6,7 @@ $(function(){
   var cell_width = 25;
   var cell_height = 25;
   
-  var num_of_mines = 15;
+  var num_of_mines = 5;
   //End Params
   
   var player_control = true;
@@ -147,6 +147,11 @@ $(function(){
     $("#minecounter").text(num_of_mines - minefield.children(".flagged").length);
   }
   
+  getMineCounter = function()
+  {
+    return $("#minecounter").text();
+  }
+  
   /*
   ---------------
   ---- Timer ----
@@ -222,7 +227,7 @@ $(function(){
   Gameover = function()
   {
     stopTimer();
-    $("#gameface").addClass("gameover");
+    $("#gameface").addClass("gameover lose");
     revealMinefield();
     gameover = true;
     player_control = false;
@@ -235,7 +240,7 @@ $(function(){
     resetMinefield();
     gameover = false;
     player_control = true;
-    $("#gameface").removeClass("gameover");
+    $("#gameface").removeClass("gameover lose win");
   };
   
   Win = function()
@@ -243,6 +248,7 @@ $(function(){
     stopTimer();
     gameover = true;
     player_control = false;
+    $("#gameface").addClass("gameover win");
   }
   
   /*
@@ -313,13 +319,17 @@ $(function(){
     startTimer();
   });
   
-  //Click on non-basic flag, hidden cell
+  //Click on non-basic flagged, hidden cell
   //reveal cell, calc cell number, if mine, gameover
   minefield.on("click",".hidden:not(.uninitialized):not(.flagged.flag)",function(e){
     revealCell($(this));
     if(!$(this).hasClass("mine"))
     {
       calculateCellNumber($(this));
+      if($(".hidden:not(.mine)").length == 0)
+      {
+        Win();
+      }
     }
     else
     {

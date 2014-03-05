@@ -10,6 +10,7 @@ Credits
 
 ######[Wikipedia - User:Pander](http://commons.wikimedia.org/w/index.php?title=User:Pander)
 * face-smile.svg
+* face-smile-big.svg
 
 ######[Wikipedia - User:Sarang](http://commons.wikimedia.org/wiki/User:Sarang)
 * questionmark.svg
