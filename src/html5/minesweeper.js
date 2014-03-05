@@ -6,7 +6,7 @@ $(function(){
   var cell_width = 25;
   var cell_height = 25;
   
-  var num_of_mines = 5;
+  var num_of_mines = 15;
   //End Params
   
   var player_control = true;

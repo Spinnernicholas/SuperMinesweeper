@@ -19,11 +19,15 @@
 /*Mine Counter*/
 #minecounter{
   display: inline-block;
+  position: relative;
+  top: -7px;
 }
 
 /*Timer*/
 #timer{
   display: inline-block;
+  position: relative;
+  top: -7px;
 }
 
 /*Score Box - ie. Mine Counter, Timer*/
