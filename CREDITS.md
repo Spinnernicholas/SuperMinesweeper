@@ -10,3 +10,6 @@ Credits
 
 ######[Wikipedia - User:Pander](http://commons.wikimedia.org/w/index.php?title=User:Pander)
 * face-smile.svg
+
+######[Clker.com - OCAL](http://www.clker.com/profile-1068.html)
+* black-bomb.svg
